@@ -1,0 +1,51 @@
+﻿<Window x:Class="PhoneBook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PhoneBook"
+        mc:Ignorable="d"
+        Title="Телефонная книга (MVVM)" Height="450" Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Ввод имени -->
+        <TextBlock Grid.Row="0" Text="Имя контакта:" Margin="0,0,0,5"/>
+        <TextBox Grid.Row="0" Margin="0,20,0,10" Padding="2"
+                 Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- Ввод телефона -->
+        <TextBlock Grid.Row="1" Text="Номер телефона (10-12 цифр):" Margin="0,0,0,5"/>
+        <TextBox Grid.Row="1" Margin="0,20,0,10" Padding="2"
+                 Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- Кнопки управления -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,5,0,15">
+            <!-- Привязка к AddCommand -->
+            <Button Content="Добавить" Width="100" Margin="0,0,10,0" Padding="5"
+                    Command="{Binding AddCommand}"/>
+
+            <!-- Привязка к DeleteCommand -->
+            <Button Content="Удалить" Width="100" Padding="5"
+                    Command="{Binding DeleteCommand}"
+                    CommandParameter="{Binding SelectedContact}"/>
+        </StackPanel>
+
+        <!-- Список контактов -->
+        <DataGrid Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True"
+                  ItemsSource="{Binding Contacts}"
+                  SelectedItem="{Binding SelectedContact, Mode=TwoWay}"
+                  SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}" Width="*"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
