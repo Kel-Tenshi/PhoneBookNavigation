@@ -2,9 +2,6 @@
 
 namespace PhoneBook.Services
 {
-    /// <summary>
-    /// Конкретная реализация сервиса диалогов для WPF.
-    /// </summary>
     public class DialogService : IDialogService
     {
         public void ShowInfo(string message, string title = "Информация")

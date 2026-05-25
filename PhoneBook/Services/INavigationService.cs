@@ -1,17 +1,8 @@
-﻿using PhoneBook.Core;
-using System;
-
-namespace PhoneBook.Services
+﻿namespace PhoneBook.Services
 {
     public interface INavigationService
     {
-        // Текущая активная ViewModel
-        ObservableObject CurrentViewModel { get; }
-
-        // Событие, оповещающее об изменении активной ViewModel
-        event Action CurrentViewModelChanged;
-
-        // Метод для перехода к другой ViewModel
-        void NavigateTo<TViewModel>() where TViewModel : ObservableObject;
+        object? CurrentViewModel { get; }
+        void NavigateTo<TViewModel>(object? parameter = null) where TViewModel : class;
     }
 }

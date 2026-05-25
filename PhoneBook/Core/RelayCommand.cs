@@ -3,10 +3,6 @@ using System.Windows.Input;
 
 namespace PhoneBook.Core
 {
-    /// <summary>
-    /// Класс, реализующий ICommand. Позволяет привязывать действия пользователя
-    /// к методам во ViewModel.
-    /// </summary>
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;

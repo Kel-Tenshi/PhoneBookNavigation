@@ -4,33 +4,35 @@ using System;
 
 namespace PhoneBook.Services
 {
-    public class NavigationService : INavigationService
+    public class NavigationService : ObservableObject, INavigationService
     {
         private readonly IServiceProvider _serviceProvider;
-        private ObservableObject _currentViewModel;
+        private object? _currentViewModel;
 
-        public event Action CurrentViewModelChanged;
-
-        public ObservableObject CurrentViewModel
+        public object? CurrentViewModel
         {
             get => _currentViewModel;
-            private set
-            {
-                _currentViewModel = value;
-                CurrentViewModelChanged?.Invoke();
-            }
+            private set => Set(ref _currentViewModel, value);
         }
 
-        // Инжектируем IServiceProvider для динамического получения нужной ViewModel
         public NavigationService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
-        public void NavigateTo<TViewModel>() where TViewModel : ObservableObject
+        public void NavigateTo<TViewModel>(object? parameter = null) where TViewModel : class
         {
-            // Получаем запрошенную ViewModel из DI-контейнера и устанавливаем как текущую
-            CurrentViewModel = _serviceProvider.GetRequiredService<TViewModel>();
+            // Получаем ViewModel из DI-контейнера
+            var vm = _serviceProvider.GetRequiredService<TViewModel>();
+
+            // Если ViewModel поддерживает прием параметров, передаем их
+            if (vm is INavigationAware navigationAware)
+            {
+                navigationAware.OnNavigatedTo(parameter);
+            }
+
+            // Обновляем текущую ViewModel
+            CurrentViewModel = vm;
         }
     }
 }

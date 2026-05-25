@@ -5,8 +5,7 @@ using System.Text.RegularExpressions;
 namespace PhoneBook.Models
 {
     /// <summary>
-    /// Модель данных. Наследует ObservableObject, чтобы UI мог обновляться, 
-    /// если свойства контакта изменятся программно.
+    /// Модель данных.
     /// </summary>
     public class Contact : ObservableObject
     {

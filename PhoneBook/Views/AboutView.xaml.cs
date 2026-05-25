@@ -2,9 +2,9 @@
 
 namespace PhoneBook.Views
 {
-    public partial class ContactsListView : UserControl
+    public partial class AboutView : UserControl
     {
-        public ContactsListView()
+        public AboutView()
         {
             InitializeComponent();
         }

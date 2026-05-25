@@ -11,30 +11,33 @@ namespace PhoneBook
         {
             base.OnStartup(e);
 
-            // Создаем коллекцию сервисов
             var services = new ServiceCollection();
 
-            // Регистрация сервисов
-            // DialogService регистрируем как Singleton из-за отсутсвия состояния
+            // Сервис диалоговых окон
             services.AddSingleton<IDialogService, DialogService>();
 
-            // Регистрация ViewModel как Transient
-            // При каждом запросе будет создаваться новый экземпляр. 
-            services.AddTransient<ContactsListViewModel>();
+            // Сервис навигации
+            services.AddSingleton<INavigationService, NavigationService>();
 
-            // Регистрация Главного окна как Singleton с явной передачей DataContext.
+            // MainWindowViewModel управляет главным окном и навигацией
+            services.AddSingleton<MainWindowViewModel>();
+
+            // MainWindow - главное окно-контейнер приложения
             services.AddSingleton<MainWindow>(provider =>
             {
                 var window = new MainWindow();
-                // Контейнер сам всё сделает, он умный
-                window.DataContext = provider.GetRequiredService<ContactsListViewModel>();
+                window.DataContext = provider.GetRequiredService<MainWindowViewModel>();
                 return window;
             });
 
-            // Провайдер сервисов
+
+            services.AddTransient<ContactsListViewModel>();
+            services.AddTransient<AboutViewModel>();
+            services.AddTransient<ContactEditViewModel>();
+
             var serviceProvider = services.BuildServiceProvider();
 
-            // Запуск
+            // Запуск главного окна оболочки
             var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }
